@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Decimal Subtraction using Nine's Complement</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background-color: #EEEDEB;
+    }
+    h2 {
+        color: #747264;
+    }
+    label {
+        color: #3C3633;
+    }
+    input[type="text"], button {
+        background-color: #E0CCBE;
+        color: #3C3633;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        margin: 5px;
+    }
+    button {
+        cursor: pointer;
+    }
+    #result {
+        background-color: #E0CCBE;
+        color: #3C3633;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        margin: 5px;
+        width: 200px;
+    }
+</style>
+</head>
+<body>
+<h2>Decimal Subtraction using Nine's Complement</h2>
+<label for="num1">Enter Minuend:</label>
+<input type="text" id="num1">
+<br><br>
+<label for="num2">Enter Subtrahend:</label>
+<input type="text" id="num2">
+<br><br>
+<button onclick="subtract()" style="background-color: #747264; color: #EEEDEB;">Subtract</button>
+<br><br>
+<label for="result">Result:</label>
+<input type="text" id="result" readonly>
+<script>
+    function subtract() {
+        var num1 = document.getElementById("num1").value;
+        var num2 = document.getElementById("num2").value;
+
+        // Convert string numbers to arrays of digits
+        var minuend = num1.split('').map(Number);
+        var subtrahend = num2.split('').map(Number);
+
+        // Ensure minuend and subtrahend have the same length
+        while (minuend.length < subtrahend.length) {
+            minuend.unshift(0);
+        }
+        while (subtrahend.length < minuend.length) {
+            subtrahend.unshift(0);
+        }
+
+        // Calculate nine's complement of subtrahend
+        var ninesComplement = subtrahend.map(digit => 9 - digit);
+
+        // Add one to the least significant digit of nine's complement
+        var carry = 1;
+        for (var i = ninesComplement.length - 1; i >= 0; i--) {
+            var sum = ninesComplement[i] + carry;
+            ninesComplement[i] = sum % 10;
+            carry = Math.floor(sum / 10);
+        }
+
+        // Perform addition (minuend + nine's complement)
+        var result = [];
+        carry = 0;
+        for (var i = minuend.length - 1; i >= 0; i--) {
+            var sum = minuend[i] + ninesComplement[i] + carry;
+            result.unshift(sum % 10);
+            carry = Math.floor(sum / 10);
+        }
+
+        // Convert array of digits back to string
+        var resultString = result.join('').replace(/^0+(?=\d)/, '');
+
+        // Display the result
+        document.getElementById("result").value = resultString || '0';
+    }
+    // program namde by Codecraft Academy
+</script>
+</body>
+</html>

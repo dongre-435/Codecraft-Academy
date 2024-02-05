@@ -1,0 +1,38 @@
+body {
+    background-color: #BBE1FA; /* Set body background color */
+  }
+  
+  .container {
+    max-width: 600px;
+    margin: 50px auto;
+    text-align: center;
+  }
+  
+  .input-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .input-container label {
+    margin-right: 10px;
+  }
+  
+  .input-container input[type="number"] {
+    padding: 5px;
+    background-color: #0F4C75; /* Set input box background color */
+    color: white; /* Set text color for input boxes */
+  }
+  
+  .input-container button {
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #3282B8; /* Set button background color */
+    color: white; /* Set button text color */
+  }
+  
+  #output {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  

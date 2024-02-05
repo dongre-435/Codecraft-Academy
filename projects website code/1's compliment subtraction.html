@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Binary Subtraction using 1's Complement</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #092d4c; /* Changed background color */
+    text-align: center; /* Center align text */
+    color: white; /* Text color */
+  }
+  #result {
+    margin-top: 20px;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+<h2>Binary Subtraction using 1's Complement</h2>
+<label for="num1">Enter Minuend (First Binary Number):</label>
+<input type="text" id="num1"><br><br>
+<label for="num2">Enter Subtrahend (Second Binary Number):</label>
+<input type="text" id="num2"><br><br>
+<button onclick="subtract()">Subtract</button>
+<div id="result"></div>
+
+<script>
+function subtract() {
+    var num1 = document.getElementById("num1").value;
+    var num2 = document.getElementById("num2").value;
+    
+    // Perform 1's complement on the subtrahend
+    var onesComplementNum2 = "";
+    for (var i = 0; i < num2.length; i++) {
+        onesComplementNum2 += num2[i] === "0" ? "1" : "0";
+    }
+    
+    // Add 1 to the 1's complement to get the 2's complement
+    var twosComplementNum2 = "";
+    var carry = 1;
+    for (var j = onesComplementNum2.length - 1; j >= 0; j--) {
+        if (onesComplementNum2[j] === "1" && carry === 1) {
+            twosComplementNum2 = "0" + twosComplementNum2;
+        } else if (onesComplementNum2[j] === "0" && carry === 1) {
+            twosComplementNum2 = "1" + twosComplementNum2;
+            carry = 0;
+        } else {
+            twosComplementNum2 = onesComplementNum2[j] + twosComplementNum2;
+        }
+    }
+
+    // Perform binary addition
+    var result = "";
+    carry = 0;
+    for (var k = num1.length - 1; k >= 0; k--) {
+        var bit1 = parseInt(num1[k], 2);
+        var bit2 = parseInt(twosComplementNum2[k] || "0", 2);
+        var sum = bit1 + bit2 + carry;
+        result = (sum % 2) + result;
+        carry = sum > 1 ? 1 : 0;
+    }
+
+    document.getElementById("result").innerText = "Result: " + result;
+    // Add success message when answer is generated
+    document.getElementById("result").innerHTML += "<p style='color: green;'>Answer Generated Successfully!</p>";
+
+    // Add steps description
+    var steps = "<br><br><b>Steps:</b><br>";
+    steps += "1. Compute the 1's complement of the subtrahend.<br>";
+    steps += "2. Add  1's complement to the given number. If overflow is there add it to LSB [least significant bit] <br>";
+    
+    document.getElementById("result").innerHTML += steps;
+}
+</script>
+</body>
+</html>

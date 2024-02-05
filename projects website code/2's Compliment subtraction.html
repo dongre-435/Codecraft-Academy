@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Binary Subtraction using 2's Complement</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #092d4c; /* Changed background color */
+    text-align: center; /* Center align text */
+    color: white; /* Text color */
+  }
+  #result {
+    margin-top: 20px;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+<h2>Binary Subtraction using 2's Complement</h2>
+<label for="num1">Enter Minuend (First Binary Number):</label>
+<input type="text" id="num1"><br><br>
+<label for="num2">Enter Subtrahend (Second Binary Number):</label>
+<input type="text" id="num2"><br><br>
+<button onclick="subtract()">Subtract</button>
+<div id="result"></div>
+
+<script>
+function subtract() {
+    var num1 = document.getElementById("num1").value;
+    var num2 = document.getElementById("num2").value;
+    
+    // Convert binary strings to arrays
+    var arr1 = num1.split("").map(Number);
+    var arr2 = num2.split("").map(Number);
+
+    // Pad the shorter array with zeros
+    var maxLength = Math.max(arr1.length, arr2.length);
+    while (arr1.length < maxLength) arr1.unshift(0);
+    while (arr2.length < maxLength) arr2.unshift(0);
+
+    // Perform 2's complement on the subtrahend
+    for (var i = 0; i < arr2.length; i++) {
+        arr2[i] = arr2[i] === 0 ? 1 : 0;
+    }
+    var carry = 1;
+    for (var j = arr2.length - 1; j >= 0; j--) {
+        var sum = arr2[j] + carry;
+        arr2[j] = sum % 2;
+        carry = sum > 1 ? 1 : 0;
+    }
+
+    // Perform binary addition
+    var result = [];
+    carry = 0;
+    for (var k = maxLength - 1; k >= 0; k--) {
+        var sum = arr1[k] + arr2[k] + carry;
+        result.unshift(sum % 2);
+        carry = sum > 1 ? 1 : 0;
+    }
+
+    // Convert result array to string
+    result = result.join("");
+
+    document.getElementById("result").innerText = "Result: " + result;
+    // Add success message when answer is generated
+    document.getElementById("result").innerHTML += "<p style='color: green;'>Answer Generated Successfully!</p>";
+
+    // Add steps description
+    var steps = "<br><br><b>Steps:</b><br>";
+    steps += "1. Convert the binary numbers to arrays and pad the shorter array with zeros.<br>";
+    steps += "2. Compute the 2's complement of the subtrahend.<br>";
+    steps += "3. Perform binary addition of the minuend and the 2's complement of the subtrahend to obtain the result.";
+    document.getElementById("result").innerHTML += steps;
+}
+</script>
+</body>
+</html>
